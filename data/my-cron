@@ -1,1 +1,1 @@
-*/5 * * * * python /app/data/main.py
+0 23 * * * python /app/data/main.py

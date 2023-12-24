@@ -26,7 +26,7 @@ def show(qr_link: str):
     qr_img.save(png_file)
 
     # 2.将二维码发送到企业微信机器人
-    webhook_send_text_pic(webhook,qr_link)
+    webhook_send_text(webhook,"请用阿里云盘扫描二维码验证登录博客，进行备份！")
     webhook_send_pic(webhook,qr_link)
 
 

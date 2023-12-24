@@ -26,4 +26,4 @@ RUN curl -fsSLO "$SUPERCRONIC_URL" \
 
 
 # RUN cron job
-CMD ["/usr/local/bin/supercronic", "/app/my-cron"]
+CMD ["/usr/local/bin/supercronic", "/app/data/my-cron"]

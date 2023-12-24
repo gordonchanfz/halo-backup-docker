@@ -6,9 +6,30 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 from aligo import Aligo
+import tempfile
+import qrcode
+from utils import webhook_send_text,webhook_send_text_pic,webhook_send_pic
+
+
+
 
 # 加载环境变量
 load_dotenv()
+#推送机器人（可选）
+webhook = os.getenv("WEBHOOK")
+
+def show(qr_link: str):
+    """自定义显示二维码"""
+    # 1.将二维码链接转为图片
+    qr_img = qrcode.make(qr_link)
+    png_file = tempfile.mktemp('.png')
+    qr_img.save(png_file)
+
+    # 2.将二维码发送到企业微信机器人
+    webhook_send_text_pic(webhook,qr_link)
+    webhook_send_pic(webhook,qr_link)
+
+
 # 使用环境变量
 # 网站地址
 website = os.getenv("WEBSITE")
@@ -20,11 +41,18 @@ ali_folder = os.getenv("ALI_FOLDER")
 user = os.getenv("USER")
 password = os.getenv("PASSWORD")
 
+
 backup_api = website + "/apis/migration.halo.run/v1alpha1/backups"
 check_api = website + "/apis/migration.halo.run/v1alpha1/backups?sort=metadata.creationTimestamp%2Cdesc"
 
 
-ali = Aligo()
+
+
+
+if webhook is None:
+    ali = Aligo()
+else:
+    ali=Aligo(show=show)
 # 获取现在的时间 2023-09-24T13:14:18.650Z
 now_time = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
 print(now_time)
@@ -71,7 +99,9 @@ if response.status_code == 201:
     # for test
     #ali.upload_file("data/main.py",parent_file_id=ali_folder)
     print("阿里云盘上传完成！")
+    webhook_send_text(webhook,"博客备份阿里云盘成功！")
 
 else:
     print(f"备份请求失败！错误代码：{response.status_code}")
+    webhook_send_text(webhook, f"博客备份阿里云盘失败！错误代码：{response.status_code}")
 

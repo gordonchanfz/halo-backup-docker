@@ -6,7 +6,7 @@ ARG TZ='Asia/Shanghai'
 WORKDIR /app
 COPY . .
 
-RUN apk update && apk --no-cache add curl
+RUN apt-get update && apt-get install -y curl
 
 RUN python -m pip install --no-cache-dir --upgrade pip \
     && pip install -U aligo \

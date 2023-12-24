@@ -8,7 +8,7 @@ import os
 from aligo import Aligo
 import tempfile
 import qrcode
-from utils import webhook_send_text,webhook_send_text_pic,webhook_send_pic
+from ..utils import webhook_send_text,webhook_send_text_pic,webhook_send_pic
 
 
 

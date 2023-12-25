@@ -8,12 +8,12 @@ from utils import logger
 # 将所有可用的配置项写在字典里, 请使用小写字母
 # 此处的配置值无实际意义，程序不会读取此处的配置，仅用于提示格式，请将配置加入到config.json中
 available_setting = {
-    "website":"https://blog.ai-note.xyz",
-    "backup_halo_path":"/app/backups",
-    "ali_folder":"65883fc166ad9579222a4f2d8251b29db7c1706f",
-    "user":"gordonchan365",
-    "password":"Cgb13923448186",
-    "webhook":"https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=78079697-3c99-422a-8901-a7f5c5a4fc90"
+    "website":"", #website你的网站地址，不要带结尾反斜杠
+    "backup_halo_path":"/app/backups",#backup_halo_path 通过挂载Halo备份的目录，与挂载目录一致即可
+    "ali_folder":"",#ali_folder 你要备份到的阿里云网盘目录ID(网页进入目录后有)
+    "user":"",#user 你Halo的账号
+    "password":"",#password 你Halo的密码
+    "webhook":""#企业微信机器人webhook（可选）
 }
 
 

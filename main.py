@@ -10,7 +10,7 @@ import tempfile
 import qrcode
 from utils import webhook_send_text,webhook_send_pic,logger
 
-
+load_config()
 #推送机器人（可选）
 webhook = conf().get("webhook")
 

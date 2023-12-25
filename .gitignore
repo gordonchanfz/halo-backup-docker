@@ -1,3 +1,4 @@
 .idea
 data/.env
 data/config.json
+__pycache__

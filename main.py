@@ -4,7 +4,6 @@ import requests
 import json
 from datetime import datetime
 from config import load_config,conf
-import os
 from aligo import Aligo
 import tempfile
 import qrcode

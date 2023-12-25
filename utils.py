@@ -1,9 +1,18 @@
+# -*- coding: utf-8 -*-
+import logging
 import requests
 import json
 import tempfile
 import qrcode
 import hashlib
 import base64
+
+
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+logger = logging.getLogger(__name__)
+
 
 
 def webhook_send_text(webhook: str, message: str) -> None:
@@ -24,6 +33,13 @@ def webhook_send_text(webhook: str, message: str) -> None:
         }),
     )
 
+    # 判断请求是否成功，并记录日志
+    if response.status_code == 200:
+        logger.info('消息发送成功')
+        logger.info(response.text)
+    else:
+        logger.error('消息发送失败')
+
 
 def webhook_send_md(webhook: str, message: str) -> None:
     response = requests.post(
@@ -36,6 +52,12 @@ def webhook_send_md(webhook: str, message: str) -> None:
             }
         }),
     )
+    # 判断请求是否成功，并记录日志
+    if response.status_code == 200:
+        logger.info('消息发送成功')
+        logger.info(response.text)
+    else:
+        logger.error('消息发送失败')
 
 
 def webhook_send_text_pic(webhook: str, qr_link: str) -> None:
@@ -55,6 +77,13 @@ def webhook_send_text_pic(webhook: str, qr_link: str) -> None:
             }
         }),
     )
+
+    # 判断请求是否成功，并记录日志
+    if response.status_code == 200:
+        logger.info('消息发送成功')
+        logger.info(response.text)
+    else:
+        logger.error('消息发送失败')
 
 
 def webhook_send_pic(webhook: str, qr_link: str) -> None:

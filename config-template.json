@@ -1,0 +1,8 @@
+{
+    "website":"http://localhost:8090",
+    "backup_halo_path":"/app/backups",
+    "ali_folder":"",
+    "user":"",
+    "password":"",
+    "webhook":""
+}

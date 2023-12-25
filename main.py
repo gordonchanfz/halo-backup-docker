@@ -3,20 +3,16 @@ import time
 import requests
 import json
 from datetime import datetime
-from dotenv import load_dotenv
+from config import load_config,conf
 import os
 from aligo import Aligo
 import tempfile
 import qrcode
-from ..utils import webhook_send_text,webhook_send_text_pic,webhook_send_pic
+from utils import webhook_send_text,webhook_send_pic,logger
 
 
-
-
-# 加载环境变量
-load_dotenv()
 #推送机器人（可选）
-webhook = os.getenv("WEBHOOK")
+webhook = conf().get("webhook")
 
 def show(qr_link: str):
     """自定义显示二维码"""
@@ -32,14 +28,14 @@ def show(qr_link: str):
 
 # 使用环境变量
 # 网站地址
-website = os.getenv("WEBSITE")
+website = conf().get("website")
 # halo2备份文件夹路径
-backup_halo_path = os.getenv("BACKUP_HALO_PATH")
+backup_halo_path = conf().get("backup_halo_path")
 # 要备份的阿里云盘文件夹ID
-ali_folder = os.getenv("ALI_FOLDER")
+ali_folder = conf().get("ali_folder")
 #halo网站用户名和密码
-user = os.getenv("USER")
-password = os.getenv("PASSWORD")
+user = conf().get("user")
+password = conf().get("password")
 
 
 backup_api = website + "/apis/migration.halo.run/v1alpha1/backups"
@@ -77,7 +73,7 @@ headers = {
 response = requests.request("POST", backup_api, headers=headers, data=payload)
 print(response.text)
 if response.status_code == 201:
-    print("备份请求成功！")
+    logger.info("备份请求成功！")
     new_backup_name = ""
     while True:
         check_response = requests.request("GET", check_api, headers=headers)
@@ -85,23 +81,23 @@ if response.status_code == 201:
             backup_data = json.loads(check_response.text)
             items = backup_data.get("items", [])
             if items[0]["status"]["phase"] == "SUCCEEDED":
-                print("备份完成！")
+                logger.info("备份完成！")
                 new_backup_name = items[0]["status"]["filename"]
                 break
             if items[0]["status"]["phase"] == "RUNNING":
-                print("正在备份！")
+                logger.info("正在备份！")
                 time.sleep(10)
 
         else:
-            print(f"查询备份请求失败！错误代码：{check_response.status_code}")
+            logger.error(f"查询备份请求失败！错误代码：{check_response.status_code}")
     ali.upload_file(backup_halo_path + "/" + new_backup_name,
                     parent_file_id=ali_folder)
     # for test
     #ali.upload_file("data/main.py",parent_file_id=ali_folder)
-    print("阿里云盘上传完成！")
+    logger.info("阿里云盘上传完成！")
     webhook_send_text(webhook,"博客备份阿里云盘成功！")
 
 else:
-    print(f"备份请求失败！错误代码：{response.status_code}")
+    logger.error(f"备份请求失败！错误代码：{response.status_code}")
     webhook_send_text(webhook, f"博客备份阿里云盘失败！错误代码：{response.status_code}")
 

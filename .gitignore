@@ -2,3 +2,4 @@
 data/.env
 data/config.json
 __pycache__
+data/credentials.txt

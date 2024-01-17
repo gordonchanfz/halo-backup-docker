@@ -1,1 +1,2 @@
 0 23 * * * python /app/main.py
+0 8 * * 5 python /app/update_pool_token.py
